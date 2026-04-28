@@ -49,7 +49,16 @@ function App() {
     setIsOptimizing(true);
     setMethod('');
     try {
-      const response = await axios.post('http://localhost:5001/api/allocate', {
+      // Use VITE_API_URL if provided, otherwise default to Netlify Function path
+      const apiUrl = import.meta.env.VITE_API_URL || '';
+      const endpoint = apiUrl ? `${apiUrl}/api/allocate` : '/.netlify/functions/allocate';
+      
+      // If running locally and no API URL is set, fallback to local backend for development
+      const finalEndpoint = (!apiUrl && window.location.hostname === 'localhost') 
+        ? 'http://localhost:5001/api/allocate' 
+        : endpoint;
+
+      const response = await axios.post(finalEndpoint, {
         resources,
         tasks
       });
