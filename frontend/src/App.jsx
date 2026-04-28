@@ -34,14 +34,14 @@ function App() {
   const addResource = (e) => {
     e.preventDefault();
     if (!newResource.trim()) return;
-    setResources([...resources, { id: Date.now(), name: newResource }]);
+    setResources(prev => [...prev, { id: Date.now(), name: newResource }]);
     setNewResource('');
   };
 
   const addTask = (e) => {
     e.preventDefault();
     if (!newTask.name.trim()) return;
-    setTasks([...tasks, { id: Date.now(), taskName: newTask.name, priority: newTask.priority }]);
+    setTasks(prev => [...prev, { id: Date.now(), taskName: newTask.name, priority: newTask.priority }]);
     setNewTask({ name: '', priority: 'Medium' });
   };
 
@@ -74,17 +74,19 @@ function App() {
         <div className="input-panels">
           <div className="panel" style={{ marginBottom: '2rem' }}>
             <h2><Users size={20} /> Resources</h2>
-            <form onSubmit={addResource} className="form-group" style={{ display: 'flex', gap: '0.5rem' }}>
-              <input 
-                type="text" 
-                className="form-control" 
-                placeholder="E.g. Server X, Engineer Y" 
-                value={newResource}
-                onChange={(e) => setNewResource(e.target.value)}
-              />
-              <button type="submit" className="btn btn-secondary" style={{ width: 'auto', marginBottom: 0 }}>
-                <PlusCircle size={20} />
-              </button>
+            <form onSubmit={addResource} className="form-group" style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+              <div style={{ display: 'flex', gap: '0.5rem' }}>
+                <input 
+                  type="text" 
+                  className="form-control" 
+                  placeholder="E.g. Server X, Engineer Y" 
+                  value={newResource}
+                  onChange={(e) => setNewResource(e.target.value)}
+                />
+                <button type="submit" className="btn btn-secondary" style={{ width: 'auto', marginBottom: 0 }}>
+                  <PlusCircle size={20} />
+                </button>
+              </div>
             </form>
             
             <div className="list">
